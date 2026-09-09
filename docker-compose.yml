@@ -8,6 +8,7 @@ services:
     environment:
       - PORT=3000
       - DATABASE_URL=postgresql://postgres:postgres@pain-db:5432/pain_db
+      - PAIN_MESSAGE_URL=http://pain-message:7246
     depends_on:
       - pain-db
     volumes:
@@ -17,6 +18,9 @@ services:
       options:
         max-size: "100m"
         max-file: "10"
+
+  pain-message:
+    image: ghcr.io/cstelmach/pain-message@sha256:b98e0bd1d96a8beff8ef2de6348255b12ffa7a832cc7ff6b75c47de17e8ac704
 
   pain-db:
     build:
