@@ -1,0 +1,33 @@
+P.A.I.N. interaction export
+
+interaction-events.csv: UTF-8, comma-separated, header row, timestamps in UTC.
+summary.json: counts and receipt-time range from the same read-only database snapshot.
+An export contains every retained interaction event; subsequent exports can overlap.
+Deduplicate by id, or by tabid plus seq, when combining exports from this same installation.
+Do not combine numeric ids from different installations as if they identified the same visitor.
+
+id: database event identifier.
+received_at: server receipt time, not exact client occurrence time; batches may arrive later.
+userid: installation-local pseudonymous visitor id. No users-table fields are exported.
+tabid: per-tab UUID; seq: event ordering and deduplication sequence within that tab.
+event_type: control, country, emotion, survey, window, gesture or page.
+target: fixed interface identifier, not arbitrary button text or a submitted response.
+action: click/open/close/change/enable/disable/next/back/submit/start/end/visible/hidden/input.
+country: selected geographic area's three-letter source key, not the visitor's location.
+emotion: fixed emotional category key; enabled: toggle state; layer: active globe layer.
+step: survey step number. count: interaction count where provided.
+selected_count: number of selected choices, never which choices were selected.
+has_text: whether a field contains text; characters: its length, never its content.
+duration_ms: measured interval duration in milliseconds, when supplied by that event.
+survey_consent: survey consent state at ingestion, not a claim of consent for other purposes.
+Empty CSV fields mean not supplied; they are not zero or false.
+
+No raw logs, IP addresses, user coordinates, survey answers, free text, user agent strings,
+or media are included. Interaction histories remain pseudonymous behavioral data:
+keep exports under the team's access controls rather than posting the ZIP publicly.
+
+Category keys:
+01_pain body pain; 02_hurt hurt; 03_eco_anxiety eco-anxiety; 04_uncertainty uncertainty;
+05_grief grief; 06_anger anger; 07_hardship hardship; 08_displacement displacement;
+09_trauma trauma; 10_loneliness loneliness; 11_depression depression; 12_fear fear;
+13_helplessness helplessness; 14_shame shame.
