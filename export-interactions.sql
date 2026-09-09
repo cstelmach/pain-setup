@@ -4,7 +4,7 @@ SET LOCAL TIME ZONE 'UTC';
 COPY (
   SELECT id, received_at, userid, tabid, seq, event_type, target, action,
     country, emotion, enabled, layer, step, count, selected_count,
-    has_text, characters, duration_ms, survey_consent
+    has_text, characters, duration_ms, survey_consent, occurred_at
   FROM interactionevents ORDER BY id
 ) TO STDOUT WITH (FORMAT CSV, HEADER TRUE);
 -- Keep the aggregate output separate from the streamed CSV, without a server-side file.

@@ -8,6 +8,8 @@ Do not combine numeric ids from different installations as if they identified th
 
 id: database event identifier.
 received_at: server receipt time, not exact client occurrence time; batches may arrive later.
+occurred_at: click/event time reported by the device, distinct from receipt. Its clock can be
+inaccurate. Empty for older clients and events collected before this field existed.
 userid: installation-local pseudonymous visitor id. No users-table fields are exported.
 tabid: per-tab UUID; seq: event ordering and deduplication sequence within that tab.
 event_type: control, country, emotion, survey, window, gesture or page.

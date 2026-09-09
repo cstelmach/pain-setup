@@ -24,3 +24,5 @@ CREATE TABLE IF NOT EXISTS interactionevents (
 CREATE INDEX IF NOT EXISTS interactionevents_received_at ON interactionevents(received_at);
 -- Batch ingestion resolves the anonymous registration ID once, including on long-running kiosks.
 CREATE INDEX IF NOT EXISTS interaction_users_userid ON users(userid);
+-- Client click time is distinct from batched receipt time. Old clients/records remain null.
+ALTER TABLE interactionevents ADD COLUMN IF NOT EXISTS occurred_at TIMESTAMPTZ;

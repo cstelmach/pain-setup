@@ -10,7 +10,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parent
-HEADER = "id,received_at,userid,tabid,seq,event_type,target,action,country,emotion,enabled,layer,step,count,selected_count,has_text,characters,duration_ms,survey_consent"
+HEADER = "id,received_at,userid,tabid,seq,event_type,target,action,country,emotion,enabled,layer,step,count,selected_count,has_text,characters,duration_ms,survey_consent,occurred_at"
 
 with tempfile.TemporaryDirectory(prefix="pain-export-test-") as temporary:
     folder = Path(temporary)
@@ -36,7 +36,7 @@ elif sys.argv[1:4] == ['exec', '-i', 'abc123']:
             '-d', 'pain_analytics_test_2'], input=query, text=True).returncode)
     print(os.environ['PAIN_EXPORT_TEST_HEADER'])
     for n in range(20000):
-        print(f'{n},2026-09-09 12:00:00+00,1,12345678-1234-4123-8123-123456789abc,{n},country,country,open,GRL,,t,all-layers,,,,,,,f')
+        print(f'{n},2026-09-09 12:00:00+00,1,12345678-1234-4123-8123-123456789abc,{n},country,country,open,GRL,,t,all-layers,,,,,,,f,2026-09-09 11:59:55+00')
     print(json.dumps({'events': 20000, 'users': 1, 'tabs': 1}), file=sys.stderr)
 else:
     raise AssertionError(sys.argv)
@@ -64,7 +64,9 @@ else:
             with archive.open("interaction-events.csv") as stream:
                 reader = csv.reader(io.TextIOWrapper(stream, encoding="utf-8"))
                 assert next(reader) == HEADER.split(",")
-                assert sum(1 for _ in reader) == expected
+                rows = list(reader)
+                assert len(rows) == expected
+                assert all(len(row) == len(HEADER.split(',')) for row in rows)
             assert json.loads(archive.read("summary.json"))["events"] == expected
         failed = subprocess.run(command + args, env={**env, "PAIN_EXPORT_TEST_FAIL": "1"},
                                 cwd="/tmp", capture_output=True, text=True)
