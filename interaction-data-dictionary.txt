@@ -18,7 +18,7 @@ emotion: fixed emotional category key; enabled: toggle state; layer: active glob
 step: survey step number. count: interaction count where provided.
 selected_count: number of selected choices, never which choices were selected.
 has_text: whether a field contains text; characters: its length, never its content.
-duration_ms: visible time in milliseconds, excluding background-tab time.
+duration_ms: time open while the browser reports a visible tab; this does not prove attention.
 For page/window events, sum the nonoverlapping duration segments. Their visible action also
 marks a periodic 15-second checkpoint, not necessarily a new visibility transition.
 Survey-step durations are cumulative within a step visit: use the final/maximum duration for
