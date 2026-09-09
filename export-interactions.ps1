@@ -52,7 +52,8 @@ Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'interaction-data-dictionary.txt
 $Archive = "$Staging.zip"
 # The platform ZIP API streams large CSV files; Compress-Archive has a 2 GiB file-size limit.
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-[IO.Compression.ZipFile]::CreateFromDirectory($Staging, $Archive)
+[IO.Compression.ZipFile]::CreateFromDirectory($Staging, "$Archive.partial")
+[IO.File]::Move("$Archive.partial", $Archive)
 # Only this invocation's completed staging directory is removed; failures retain diagnostics.
 Remove-Item -LiteralPath $Csv, $Summary, (Join-Path $Staging 'data-dictionary.txt')
 Remove-Item -LiteralPath $Staging

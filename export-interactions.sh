@@ -22,7 +22,8 @@ docker exec -i "$CONTAINER_ID" sh -c \
   > "$STAGING/interaction-events.csv" 2> "$STAGING/summary.json"
 cp "$SCRIPT_DIR/interaction-data-dictionary.txt" "$STAGING/data-dictionary.txt"
 # zip removes only these freshly created files after successfully adding them to the archive.
-zip -q -j -m "$ARCHIVE" "$STAGING/interaction-events.csv" "$STAGING/summary.json" "$STAGING/data-dictionary.txt"
+zip -q -j -m "$STAGING/archive.pending.zip" "$STAGING/interaction-events.csv" "$STAGING/summary.json" "$STAGING/data-dictionary.txt"
+mv "$STAGING/archive.pending.zip" "$ARCHIVE"
 rmdir "$STAGING"
 echo "Export ready: $ARCHIVE"
 echo 'Copy this ZIP to your USB stick. The database was not changed.'
