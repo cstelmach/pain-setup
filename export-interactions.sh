@@ -3,7 +3,9 @@
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUTPUT_DIR="${1:-$SCRIPT_DIR/interaction-exports}"
-COMPOSE_FILE="${2:-$SCRIPT_DIR/../docker-compose.yml}"
+WORKSPACE="$(dirname "$SCRIPT_DIR")"
+if [[ "$(basename "$WORKSPACE")" == pain-setup-worktrees ]]; then WORKSPACE="$(dirname "$WORKSPACE")"; fi
+COMPOSE_FILE="${2:-$WORKSPACE/docker-compose.yml}"
 [[ -f "$COMPOSE_FILE" ]] || { echo "Compose file not found: $COMPOSE_FILE" >&2; exit 1; }
 command -v docker >/dev/null
 command -v zip >/dev/null

@@ -1,8 +1,13 @@
 param(
     [string]$OutputDirectory = (Join-Path $PSScriptRoot 'interaction-exports'),
-    [string]$ComposeFile = (Join-Path $PSScriptRoot '../docker-compose.yml')
+    [string]$ComposeFile = ''
 )
 $ErrorActionPreference = 'Stop'
+if (!$ComposeFile) {
+    $Workspace = Split-Path $PSScriptRoot -Parent
+    if ((Split-Path $Workspace -Leaf) -eq 'pain-setup-worktrees') { $Workspace = Split-Path $Workspace -Parent }
+    $ComposeFile = Join-Path $Workspace 'docker-compose.yml'
+}
 if (!(Test-Path -LiteralPath $ComposeFile -PathType Leaf)) { throw "Compose file not found: $ComposeFile" }
 $Docker = (Get-Command docker -CommandType Application | Select-Object -First 1).Source
 $ContainerId = (& $Docker compose -f $ComposeFile ps -q pain-db | Out-String).Trim()

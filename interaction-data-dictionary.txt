@@ -18,7 +18,12 @@ emotion: fixed emotional category key; enabled: toggle state; layer: active glob
 step: survey step number. count: interaction count where provided.
 selected_count: number of selected choices, never which choices were selected.
 has_text: whether a field contains text; characters: its length, never its content.
-duration_ms: measured interval duration in milliseconds, when supplied by that event.
+duration_ms: visible time in milliseconds, excluding background-tab time.
+For page/window events, sum the nonoverlapping duration segments. Their visible action also
+marks a periodic 15-second checkpoint, not necessarily a new visibility transition.
+Survey-step durations are cumulative within a step visit: use the final/maximum duration for
+each visit, not the sum of its snapshots. A repeated step visit is a separate interval.
+Choice counts are state snapshots. Count click events to measure button activations.
 survey_consent: survey consent state at ingestion, not a claim of consent for other purposes.
 Empty CSV fields mean not supplied; they are not zero or false.
 
