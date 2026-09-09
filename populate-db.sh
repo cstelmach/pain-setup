@@ -87,6 +87,9 @@ if [ $# -gt 0 ]; then
         create_metrics_table $TNM_TOGGLE ", $COL_KIND TEXT NOT NULL, $COL_ELEM TEXT NOT NULL, $COL_ENABLED BOOL NOT NULL"
         create_metrics_table $TNM_STEP ", $COL_STEP SMALLINT NOT NULL CHECK ($COL_STEP BETWEEN 0 AND $TYPE_STEP_MAX)"
         create_metrics_table $TNM_VIS ", $COL_VIS_MODE TEXT NOT NULL"
+        # The additive analytics schema is shared with upgrades of existing installations.
+        docker exec -i "$CONTAINER_ID" psql -X -v ON_ERROR_STOP=1 -U postgres -d pain_db \
+            < "$SCRIPT_DIR/migrations/20260909-interaction-events.sql" || exit 1
         exit 0
 
     # ############################################################

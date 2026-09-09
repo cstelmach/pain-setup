@@ -75,6 +75,9 @@ if ($Init) {
     Create-Metrics-Table $TNM_TOGGLE ", $COL_KIND TEXT NOT NULL, $COL_ELEM TEXT NOT NULL, $COL_ENABLED BOOL NOT NULL"
     Create-Metrics-Table $TNM_STEP ", $COL_STEP SMALLINT NOT NULL CHECK ($COL_STEP BETWEEN 0 AND $TYPE_STEP_MAX)"
     Create-Metrics-Table $TNM_VIS ", $COL_VIS_MODE ${TYPE_VIS_MODE} NOT NULL"
+    Get-Content -Raw (Join-Path $PSScriptRoot 'migrations/20260909-interaction-events.sql') |
+        docker exec -i $CONTAINER_ID psql -X -v ON_ERROR_STOP=1 -U postgres -d pain_db
+    if ($LASTEXITCODE -ne 0) { throw 'Interaction schema initialization failed.' }
 
     Write-Host "Finished initializing!"
 }
