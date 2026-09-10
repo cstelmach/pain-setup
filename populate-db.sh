@@ -1,8 +1,6 @@
 #!/bin/bash -e
 # File attribution
 # edited by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
-# changes: +3 / -0 lines (excluding attribution)
-# baseline: 0347e040bc74 (development before PR #6)
 # Bash script to initialize, fill, test, and reset the pain database
 
 # Parse command line arguments

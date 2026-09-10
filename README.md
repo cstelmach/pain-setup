@@ -1,8 +1,6 @@
 <!--
 File attribution
 edited by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
-changes: +30 / -0 lines (excluding attribution)
-baseline: 0347e040bc74 (development before PR #6)
 -->
 # PPP Map Setup
 This repository contains the Docker Compose configuration for the entire PPP Map project.
