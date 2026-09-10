@@ -1,3 +1,5 @@
+-- File attribution
+-- created by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
 -- Additive migration. Run once against the existing database; never reinitialize its data.
 CREATE TABLE IF NOT EXISTS interactionevents (
   id BIGSERIAL PRIMARY KEY,

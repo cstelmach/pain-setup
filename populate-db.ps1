@@ -1,3 +1,7 @@
+# File attribution
+# edited by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
+# changes: +5 / -2 lines (excluding attribution)
+# baseline: 0347e040bc74 (development before PR #6)
 # 
 param(
     [switch]$Init,

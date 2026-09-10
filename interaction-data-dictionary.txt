@@ -1,3 +1,5 @@
+File attribution
+created by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
 P.A.I.N. interaction export
 
 interaction-events.csv: UTF-8, comma-separated, header row, timestamps in UTC.

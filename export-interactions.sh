@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# File attribution
+# created by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
 # Usage: ./export-interactions.sh [output-directory] [workspace/docker-compose.yml]
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

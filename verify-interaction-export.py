@@ -1,3 +1,5 @@
+# File attribution
+# created by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
 """Run: python3 verify-interaction-export.py. Fake Docker only; never contacts the real stack."""
 import csv
 import io

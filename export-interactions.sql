@@ -1,3 +1,5 @@
+-- File attribution
+-- created by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
 -- psql runs inside the Linux database container. CSV and summary share one read-only snapshot.
 BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY;
 SET LOCAL TIME ZONE 'UTC';

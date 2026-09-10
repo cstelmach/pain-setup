@@ -1,3 +1,5 @@
+# File attribution
+# created by Christian Stelmach (chrisp.stel@gmail.com), GitHub: @cstelmach
 param(
     [string]$OutputDirectory = (Join-Path $PSScriptRoot 'interaction-exports'),
     [string]$ComposeFile = ''
