@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # Bash script to initialize, fill, test, and reset the pain database
 
 # Parse command line arguments
@@ -171,15 +171,50 @@ if [ $# -gt 0 ]; then
         drop "TYPE" ${TYPE_VIS_MODE}
         exit 0
     elif [ $1 == "--clear" ]; then
-        echo "Clearing table = ${3}pain";
-        docker exec -it "$CONTAINER_ID" psql -U postgres -d pain_db -c "TRUNCATE ${3}pain;"
+        echo "Clearing table = ${3}";
+        docker exec -it "$CONTAINER_ID" psql -U postgres -d pain_db -c "TRUNCATE ${3};"
+        exit 0
+    elif [ $1 == "--export" ]; then
+        export_metrics() {
+            #$1... table name
+            #$2... destination file
+            echo "Exporting $1 to ${2}"
+            # copy data from CSV into the table
+            docker exec $CONTAINER_ID psql -U postgres -d pain_db -c "\copy $1 TO STDOUT WITH (FORMAT CSV, HEADER)" > ${2}
+            if [ $? -eq 0 ]; then
+                echo "  - successfully exported $1 to ${2}"
+            else
+                echo "  - FAILED to export $1 to ${2}" >&2
+            fi
+        }
+
+        echo "Exporting user metrics..."
+        if [ $# -gt 2 ]; then
+            CSV_ROOT_FOLDER="$3"
+        else
+            CSV_ROOT_FOLDER="../db-export"
+        fi
+        if [[ -d $CSV_ROOT_FOLDER ]]; then
+            TIME_STAMP=`date +%s`
+            export_metrics $TNM_TOGGLE "${CSV_ROOT_FOLDER}/${TNM_TOGGLE}_${TIME_STAMP}.csv"
+            export_metrics $TNM_STEP "${CSV_ROOT_FOLDER}/${TNM_STEP}_${TIME_STAMP}.csv"
+            export_metrics $TNM_VIS "${CSV_ROOT_FOLDER}/${TNM_VIS}_${TIME_STAMP}.csv"
+            export_metrics $TNM_USER_COORDINATES "${CSV_ROOT_FOLDER}/${TNM_USER_COORDINATES}_${TIME_STAMP}.csv"
+            export_metrics $TNM_USERS "${CSV_ROOT_FOLDER}/${TNM_USERS}_${TIME_STAMP}.csv"
+            exit 0
+        else
+            echo "ERROR: ${CSV_ROOT_FOLDER} is not a folder!" >&2
+            exit 1
+        fi
     fi
 fi
 
 # If no valid argument is provided, print usage
 echo "Usage: ./populate-db.sh [--init] [--fill] [--test] [--reset]"
-echo "  --init  : Initialize database schema (run once)"
-echo "  --fill  : Fill database with dummy data (run after init)"
-echo "  --test  : Test database connection and contents"
-echo "  --reset : Reset database by dropping the table"
+echo "  --init   : Initialize database schema (run once)"
+echo "  --fill   : Fill database with data (run after init)"
+echo "  --test   : Test database connection and contents"
+echo "  --reset  : Reset database by dropping all tables"
+echo "  --clear  : Clears target table by truncating it"
+echo "  --export : Export user metrics stored in database as CSVs to target folder path"
 exit 1
